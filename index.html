@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Épreuve spéciale</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  height:100vh;
+  overflow:hidden;
+}
+
+/* COUVERTURE */
+.cover{
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),
+    url("cover.jpg") center/cover no-repeat;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  text-align:center;
+  padding:20px;
+  z-index:10;
+}
+.cover button{
+  padding:14px 30px;
+  border:none;
+  border-radius:30px;
+  font-size:16px;
+  cursor:pointer;
+  background:#ff4d6d;
+  color:white;
+}
+
+/* MAIN */
+.main{
+  display:none;
+  height:100vh;
+  background:linear-gradient(135deg,#ffd1dc,#f7cdd5);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.card{
+  background:white;
+  padding:30px;
+  width:360px;
+  border-radius:28px;
+  text-align:center;
+  box-shadow:0 25px 50px rgba(0,0,0,.25);
+}
+
+.step{display:none;}
+.buttons{
+  margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+button{
+  padding:12px;
+  border:none;
+  border-radius:25px;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.neutral{background:#ffd6e0;}
+.yes{background:#ff4d6d;color:white;}
+.no{background:#eee;position:relative;}
+
+.good{color:#2e8b57;font-weight:bold;font-size:18px;}
+.bad{color:#d11a2a;font-weight:bold;font-size:18px;}
+.flash{font-size:22px;font-weight:bold;}
+
+.kiss{
+  width:100%;
+  border-radius:20px;
+  margin-top:15px;
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+</style>
+</head>
+
+<body>
+
+<!-- COUVERTURE -->
+<div class="cover" id="cover">
+  <h1>Épreuve exceptionnelle 🤍</h1>
+  <p>Rattrapage – Droit administratif</p>
+  <button onclick="start()">Commencer</button>
+</div>
+
+<!-- CONTENU -->
+<div class="main" id="main">
+<div class="card">
+
+<!-- Q1 -->
+<div class="step" id="q1">
+<strong>Question 1 :</strong><br>
+Le recours pour excès de pouvoir sert à :
+<div class="buttons">
+<button class="neutral" onclick="answer(true)">Annuler un acte administratif illégal</button>
+<button class="neutral" onclick="answer(false)">Punir l’administration</button>
+</div>
+</div>
+
+<!-- Q2 -->
+<div class="step" id="q2">
+<strong>Question 2 :</strong><br>
+Le principe de légalité signifie que :
+<div class="buttons">
+<button class="neutral" onclick="answer(true)">L’administration respecte la loi</button>
+<button class="neutral" onclick="answer(false)">L’administration fait ce qu’elle veut</button>
+</div>
+</div>
+
+<!-- FEEDBACK -->
+<div class="step" id="feedback"></div>
+
+<!-- RESULTAT -->
+<div class="step" id="result">
+<div id="resultText"></div>
+<div class="buttons">
+<button class="yes" onclick="goToLove()">Continuer</button>
+</div>
+</div>
+
+<!-- QUESTION FINALE -->
+<div class="step" id="love">
+<strong>Question finale :</strong><br><br>
+Conformément aux principes de stabilité et de bonne foi,<br>
+es-tu favorable au fait que nous<br>
+<strong>revenions à notre chemin</strong><br>
+tout en nous <strong>stabilisant ensemble</strong> 🤍 ?
+<div class="buttons">
+<button class="yes" onclick="finalStep()">Avis favorable</button>
+<button class="no" id="noBtn">Avis défavorable</button>
+</div>
+</div>
+
+<!-- FUNNY -->
+<div class="step flash" id="flash">
+ALLAH Y3EZ LEHKAM 😂
+</div>
+
+<!-- TEXTO FINAL -->
+<div class="step" id="finalText">
+<strong>Je veux aussi.</strong><br><br>
+Je t’aime 🤍  
+et je compte sur nous.<br><br>
+Pas dans la précipitation.<br>
+Pas dans le bruit.<br><br>
+Juste avec du respect,  
+de la stabilité,  
+et l’envie sincère d’avancer ensemble.<br><br>
+
+<div class="buttons">
+<button class="yes" onclick="showPhoto()">Continuer</button>
+</div>
+</div>
+
+<!-- PHOTO (DERNIÈRE ÉTAPE) -->
+<div class="step" id="photo">
+<img src="kiss.jpg" class="kiss">
+</div>
+
+</div>
+</div>
+
+<script>
+let score=0;
+let current=1;
+
+function start(){
+  cover.style.display="none";
+  main.style.display="flex";
+  q1.style.display="block";
+}
+
+function answer(correct){
+  if(correct) score++;
+  hideAll();
+  feedback.innerHTML = correct
+    ? "<div class='good'>MOJTAHIDA DYALI 🤍</div>"
+    : "<div class='bad'>KASSOULA DYALI 😂</div>";
+  feedback.style.display="block";
+
+  setTimeout(()=>{
+    feedback.style.display="none";
+    current++;
+    if(current===2) q2.style.display="block";
+    else showResult();
+  },900);
+}
+
+function showResult(){
+  hideAll();
+  if(score===2){
+    resultText.innerHTML="<strong>Rattrapage validé 😌</strong><br><br>Validé avec mention.<br>Le cerveau ET le style étaient présents 💅✨";
+  }else if(score===1){
+    resultText.innerHTML="<strong>Non validé 😅</strong><br><br>Mais mon amour pour toi,<br><strong>lui, est validé 🤍</strong>";
+  }else{
+    resultText.innerHTML="<strong>Rien n’est validé 😭</strong><br><br>Mais c’est pas grave,<br><strong>l’outfit compte aussi 😌✨</strong>";
+  }
+  result.style.display="block";
+}
+
+function goToLove(){
+  hideAll();
+  love.style.display="block";
+}
+
+noBtn.addEventListener("mouseenter",()=>{
+  noBtn.style.left=Math.random()*150+"px";
+  noBtn.style.top=Math.random()*80+"px";
+});
+
+function finalStep(){
+  hideAll();
+  flash.style.display="block";
+  setTimeout(()=>{
+    flash.style.display="none";
+    finalText.style.display="block";
+  },700);
+}
+
+function showPhoto(){
+  hideAll();
+  photo.style.display="block";
+}
+
+function hideAll(){
+  document.querySelectorAll(".step").forEach(s=>s.style.display="none");
+}
+</script>
+
+</body>
+</html>
